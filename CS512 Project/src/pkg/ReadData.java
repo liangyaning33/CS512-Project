@@ -272,11 +272,11 @@ public class ReadData {
 		    FileWriter writer = new FileWriter(file);
 			
 		    writer.write("User ID");
-		    writer.write('\t');
+		    writer.write("\t\t");
 		    writer.write("Items");
-		    writer.write('\t');
+		    writer.write("\t\t");
 		    writer.write("Lists");
-		    writer.write('\t');
+		    writer.write("\t\t");
 		    writer.write("Friends"); 
 		    writer.write('\n'); 
 		    
@@ -284,11 +284,11 @@ public class ReadData {
 		    for (int i=0; i<users.size(); i++)
 		    {
 		    	writer.write(users.get(i).user_id); 
-		    	writer.write('\t'); 
+		    	writer.write("\t\t"); 
 		    	writer.write(Integer.toString(users.get(i).user_item.size())); 
-		    	writer.write('\t');
+		    	writer.write("\t\t");
 		    	writer.write(Integer.toString(users.get(i).user_list.size())); 
-		    	writer.write('\t'); 
+		    	writer.write("\t\t"); 
 		    	writer.write(Integer.toString(users.get(i).user_friend.size())); 
 		    	writer.write('\n'); 
 		    }		    
