@@ -2,51 +2,47 @@ package pkg;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import pkg.ReadData.*;
 import java.util.*; 
+import java.lang.Math; 
+import pkg.Objects.*;
 
-public class main {	
+public class main {
 	
 	
-	
-	public static void main (String[] args)
+	public static void main(String args[])
 	{
-		ReadData t = new ReadData(); 
-		Map<String, ArrayList<String>> user_list = t.buildUserList(); 
-		Map<String, ArrayList<String>> user_friend = t.buildUserFriendList(); 
-		Map<String, ArrayList<String>> user_item_list = t.buildUserItemList(); 
-
-		ArrayList<User> users = new ArrayList<User>(); 
-		Set<String> set = user_list.keySet(); 
-		for (String key:set)
+		ReadData p = new ReadData(); 
+		Objects q = new Objects(); 
+		All comb = q.new All(); 
+		comb.All_Items = new ArrayList<Item>(); 
+		comb.All_Lists = new ArrayList<Lists>(); 
+		comb.All_Users = new ArrayList<User>(); 
+		comb = p.buildUserList("Foursquare\\l_u_train.txt", comb); 
+		comb = p.buildListItem("Foursquare\\l_i.txt", comb); 
+		comb = p.buildUserItem("Foursquare\\u_i_train.txt", comb); 
+		List<User> All_Users= comb.All_Users; 
+		List<Lists> All_Lists= comb.All_Lists; 
+		/*
+		for  (int i=0; i<All_Users.size(); i++)
 		{
-			User temp = t.new User(key); //initialize a user
-			temp.user_list = user_list.get(key); //user - lists
-			//temp.user_friend = user_friend.get(key); 
-			users.add(temp); 				
-		}
-		for (int i=0; i<users.size(); i++)
+			System.out.println("USer ID" +All_Users.get(i).User_ID); 
+			System.out.println("# of  lists" + All_Users.get(i).User_Lists.size());
+			for (int j=0; j<All_Users.get(i).User_Lists.size(); j++)
+				System.out.println("List ID"+All_Users.get(i).User_Lists.get(j).List_ID);
+		} */
+		for (int i=0; i<All_Lists.size(); i++)
 		{
-			String key = users.get(i).user_id; 
-			if (user_friend.containsKey(key))
-				users.get(i).user_friend = user_friend.get(key); 
-			if (user_item_list.containsKey(key))
-				users.get(i).user_item = user_item_list.get(key); 
-			System.out.println("User ID is " + users.get(i).user_id); 
-			/*
-			for (int j=0; j<users.get(i).user_list.size(); j++)
-				System.out.println(users.get(i).user_list.get(j)); 
-			
-			for (int k=0; k<users.get(i).user_friend.size(); k++)
-				System.out.println(users.get(i).user_friend.get(k)); 
-			for (int l=0; l<users.get(i).user_item.size(); l++)
-				System.out.println(users.get(i).user_item.get(l));
-				*/
-			System.out.println("List size is "+ users.get(i).user_list.size());
-			System.out.println("Friend size is "+ users.get(i).user_friend.size());
-			System.out.println("Item size is "+ users.get(i).user_item.size());
+			System.out.println("List ID " +All_Lists.get(i).List_ID); 
+			System.out.println("# of  users" + All_Lists.get(i).List_Users.size());
+			System.out.println("# of Items"+All_Lists.get(i).List_Items.size()); 
+			for (int j=0; j<All_Lists.get(i).List_Users.size(); j++)
+				System.out.println("User ID"+All_Lists.get(i).List_Users.get(j).User_ID);	
+			for (int j=0; j<All_Lists.get(i).List_Items.size(); j++)
+				System.out.println("Item ID"+All_Lists.get(i).List_Items.get(j).Item_ID);	
 		}
-		t.writeFile("output.txt", users); 
 		
 	}
+	
+	
+	
 }

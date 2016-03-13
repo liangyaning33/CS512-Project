@@ -1,243 +1,70 @@
-package pkg; 
+package pkg;
+import java.util.*; 
+import java.util.List;
+
+import pkg.Objects.*;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*; 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Object;
+import java.lang.Math.*; 
 
-
-public class ReadData {
-
-	public class User{
-		ArrayList<String> user_list;
-		ArrayList<String> user_item; 
-		ArrayList<String> user_friend; 
-		String user_id; 		
-		public User(String x)
+public class ReadData{
+	
+	public int getIndexUser(List<User> all_users, String ID)
+	{
+		int index = -1; 
+		for (int i=0; i<all_users.size(); i++)
 		{
-			this.user_id = x; 
-			this.user_list = new ArrayList<String>(); 
-			this.user_item = new ArrayList<String>(); 
-			this.user_friend = new ArrayList<String>(); 
+			User temp = all_users.get(i); 
+			if (temp.User_ID.equals(ID))
+			{
+				index = i; 
+				break; 
+			} 
 		}
-		
+		return index; 
 	}
-	public class Item{
-		
-		
-		String item_id; 	
-		public Item(String i)
+	public int getIndexList(List<Lists> all_users, String ID)
+	{
+		if (all_users == null || all_users.size() == 0)
+			return -1; 
+		int index = -1;		
+		for (int i=0; i<all_users.size(); i++)
 		{
-			this.item_id = i; 
+			Lists temp = all_users.get(i); 
+			if (temp.List_ID.equals(ID))
+			{
+				index = i; 
+				break; 
+			} 
 		}
+		return index; 
 	}
-	public class ItemList{
-		public String list_id; 
-		public ArrayList<Item> list_items; 
-		public ItemList(String x, ArrayList<Item> y)
+	public int getIndexItem(List<Item> all_users, String ID)
+	{
+		if (all_users == null || all_users.size() == 0)
+			return -1; 
+		int index = -1; 
+		for (int i=0; i<all_users.size(); i++)
 		{
-			this.list_id = x; 
-			this.list_items = y; 
+			Item temp = all_users.get(i); 
+			if (temp.Item_ID.equals(ID))
+			{
+				index = i; 
+				break; 
+			} 
 		}
+		return index; 
 	}
 	
-	public class Tuple { 
-		  public final String x; 
-		  public final String y; 
-		  public Tuple(String x, String y) { 
-		    this.x = x; 
-		    this.y = y; 
-		  } 
-		  public String getX()
-		  {
-			  return x; 
-		  }
-		  public String getY()
-		  {
-			  return y; 
-		  }
-		  
-		} 
-	public Map<String, ArrayList<Item>> buildList()
+	public List<Tuple> read(String file)
 	{
-		Map<String, ArrayList<Item>> lists = new HashMap<String, ArrayList<Item>>(); 
-		ArrayList<Tuple> input = read("Foursquare\\l_i.txt"); 
-		for (int i=0; i<input.size(); i++)
-		{
-			String listID = input.get(i).x; 
-			String itemID = input.get(i).y;
-			Item item = new Item(itemID); 
-			
-			if (lists.containsKey(listID))
-			{
-				lists.get(listID).add(item); 
-			}
-			else
-			{
-				ArrayList<Item> entry = new ArrayList<Item>(); 
-				entry.add(item); 
-				lists.put(listID, entry); 			
-			}	
-		}
-		/* 
-		Set<String> set = lists.keySet(); 
-		for (String key:set)
-		{
-			ArrayList<Item> temp = lists.get(key); 
-			for (int i=0; i<temp.size(); i++)
-				System.out.println(temp.get(i).item_id); 
-			System.out.println(lists.get(key).size()); 
-		}
-		*/
-		return lists; 		
-	}
-	public Map<String, ArrayList<String>> buildGeneralList(String file)
-	{
-		//Map<String, ArrayList<Item>> lists = buildList(); 
-		Map<String, ArrayList<String>> result = new HashMap<String, ArrayList<String>>(); 
-		ArrayList<Tuple> input = read(file); 
-		
-		for (int i=0; i<input.size(); i++)
-		{
-			String listID = input.get(i).x; 
-			String userID = input.get(i).y;
-			//Item item = new Item(itemID); 
-			//ItemList list = new ItemList(listID, lists.get(listID)); 
-			if (result.containsKey(userID))
-			{
-				result.get(userID).add(listID); 
-			}
-			else
-			{
-				ArrayList<String> entry = new ArrayList<String>(); 
-				entry.add(listID); 
-				result.put(userID, entry); 			
-			}	
-		}
-		/* 
-		Set<String> set = result.keySet(); 
-		for (String key:set)
-		{
-			ArrayList<String> temp = result.get(key); 
-			for (int i=0; i<temp.size(); i++)
-				System.out.println(temp.get(i)); 
-			System.out.println(result.get(key).size()); 
-		}
-		*/
-		return result; 		
-	}
-	public Map<String, ArrayList<String>> buildUserList()
-	{
-		//Map<String, ArrayList<Item>> lists = buildList(); 
-		Map<String, ArrayList<String>> result = new HashMap<String, ArrayList<String>>(); 
-		ArrayList<Tuple> input = read("Foursquare\\l_u_train.txt"); 
-		
-		for (int i=0; i<input.size(); i++)
-		{
-			String listID = input.get(i).x; 
-			String userID = input.get(i).y;
-			//Item item = new Item(itemID); 
-			//ItemList list = new ItemList(listID, lists.get(listID)); 
-			if (result.containsKey(userID))
-			{
-				result.get(userID).add(listID); 
-			}
-			else
-			{
-				ArrayList<String> entry = new ArrayList<String>(); 
-				entry.add(listID); 
-				result.put(userID, entry); 			
-			}	
-		}
-		/* 
-		Set<String> set = result.keySet(); 
-		for (String key:set)
-		{
-			ArrayList<String> temp = result.get(key); 
-			for (int i=0; i<temp.size(); i++)
-				System.out.println(temp.get(i)); 
-			System.out.println(result.get(key).size()); 
-		}
-		*/
-		return result; 		
-	}
-	public Map<String, ArrayList<String>> buildUserFriendList()
-	{
-		//Map<String, ArrayList<Item>> lists = buildList(); 
-		Map<String, ArrayList<String>> result = new HashMap<String, ArrayList<String>>(); 
-		ArrayList<Tuple> input = read("Foursquare\\u_f.txt"); 
-		
-		for (int i=0; i<input.size(); i++)
-		{
-			String userID = input.get(i).x; 
-			String friendID = input.get(i).y;
-			//Item item = new Item(itemID); 
-			//ItemList list = new ItemList(listID, lists.get(listID)); 
-			if (result.containsKey(userID))
-			{
-				result.get(userID).add(friendID); 
-			}
-			else
-			{
-				ArrayList<String> entry = new ArrayList<String>(); 
-				entry.add(friendID); 
-				result.put(userID, entry); 			
-			}	
-		}
-		/* 
-		Set<String> set = result.keySet(); 
-		for (String key:set)
-		{
-			ArrayList<String> temp = result.get(key); 
-			for (int i=0; i<temp.size(); i++)
-				System.out.println(temp.get(i)); 
-			System.out.println(result.get(key).size()); 
-		}
-		*/
-		return result; 		
-	}
-	public Map<String, ArrayList<String>> buildUserItemList()
-	{
-		Map<String, ArrayList<String>> result = new HashMap<String, ArrayList<String>>(); 
-		ArrayList<Tuple> input = read("Foursquare\\u_i_train.txt"); 
-		
-		for (int i=0; i<input.size(); i++)
-		{
-			String userID = input.get(i).x; 
-			String itemID = input.get(i).y;
-			//Item item = new Item(itemID); 
-			//ItemList list = new ItemList(listID, lists.get(listID)); 
-			if (result.containsKey(userID))
-			{
-				result.get(userID).add(itemID); 
-			}
-			else
-			{
-				ArrayList<String> entry = new ArrayList<String>(); 
-				entry.add(itemID); 
-				result.put(userID, entry); 			
-			}	
-		}
-		/* 
-		Set<String> set = result.keySet(); 
-		for (String key:set)
-		{
-			ArrayList<String> temp = result.get(key); 
-			for (int i=0; i<temp.size(); i++)
-				System.out.println(temp.get(i)); 
-			System.out.println(result.get(key).size()); 
-		}
-		*/
-		return result; 		
-	}
-	
-	public ArrayList<Tuple> read(String file)
-	{
-		ArrayList<Tuple> result = new ArrayList<Tuple>(); 		
+		List<Tuple> result = new ArrayList<Tuple>(); 		
 		BufferedReader br = null;
 		try{
 			br = new BufferedReader(new FileReader(file));
@@ -247,64 +74,122 @@ public class ReadData {
 			{
 				String delims = "\t";
 				String[] tokens = line.split(delims);
-				Tuple temp = new Tuple(tokens[0], tokens[1]); 
+				Objects obj = new Objects(); 
+				Tuple temp = obj.new Tuple(tokens[0], tokens[1]); 
 				result.add(temp); 
-				//System.out.println(tokens[0]+" "+tokens[1]); 
 				line=br.readLine();
-			}
-			
+			}			
 		} catch (FileNotFoundException e){
 			e.printStackTrace();		
 		} catch (IOException e){
-			e.printStackTrace();
-			
+			e.printStackTrace();			
 		}catch (NullPointerException e)
-		{e.printStackTrace();
-			
+		{e.printStackTrace();			
 		}		
-		return result;
-		
+		return result;		
 	}
-	public void writeFile(String file, ArrayList<User> users)
+	public All buildUserList(String file, All comb)
 	{
-		try
+		List<Tuple> input = read(file); 
+		List<User> All_Users = comb.All_Users; 
+		List<Lists> All_Lists = comb.All_Lists; 
+		for (int i=0; i<input.size(); i++)
 		{
-		    FileWriter writer = new FileWriter(file);
-			
-		    writer.write("User ID");
-		    writer.write("\t\t");
-		    writer.write("Items");
-		    writer.write("\t\t");
-		    writer.write("Lists");
-		    writer.write("\t\t");
-		    writer.write("Friends"); 
-		    writer.write('\n'); 
-		    
-		     
-		    for (int i=0; i<users.size(); i++)
-		    {
-		    	writer.write(users.get(i).user_id); 
-		    	writer.write("\t\t"); 
-		    	writer.write(Integer.toString(users.get(i).user_item.size())); 
-		    	writer.write("\t\t");
-		    	writer.write(Integer.toString(users.get(i).user_list.size())); 
-		    	writer.write("\t\t"); 
-		    	writer.write(Integer.toString(users.get(i).user_friend.size())); 
-		    	writer.write('\n'); 
-		    }		    
-		    writer.flush();
-		    writer.close();
-	
+			String ListID = input.get(i).x; 
+			String UserID = input.get(i).y; 
+			int ListIndex = getIndexList(All_Lists, ListID); 
+			Lists temp; 
+			Objects p = new Objects(); 
+			if (ListIndex == -1)
+			{
+				temp = p.new Lists(ListID); 
+				All_Lists.add(temp); 
+			}
+			else 
+				temp = All_Lists.get(ListIndex); 
+			List<User> Curr_User = temp.List_Users; 
+			int UserIndex = getIndexUser(All_Users, UserID); 
+			User temp_user; 
+			if (UserIndex == -1)
+			{
+				temp_user = p.new User(UserID); 
+				All_Users.add(temp_user); 
+			}
+			else
+				temp_user = All_Users.get(UserIndex); 
+			Curr_User.add(temp_user); 
+			temp_user.User_Lists.add(temp); 			
 		}
-		catch(IOException e)
-		{
-		     e.printStackTrace();
-		} 	
-		
+		return comb; 			
 	}
-	
-
+	public All buildListItem(String file, All comb)
+	{
+		List<Tuple> input = read(file); 
+		List<Lists> All_Lists = comb.All_Lists; 
+		List<Item> All_Items = comb.All_Items; 
+		for (int i=0; i<input.size(); i++)
+		{
+			String ListID = input.get(i).x; 
+			String ItemID = input.get(i).y; 
+			int ListIndex = getIndexList(All_Lists, ListID); 
+			Lists temp; 
+			Objects p = new Objects(); 
+			if (ListIndex == -1)
+			{
+				temp = p.new Lists(ListID); 
+				All_Lists.add(temp); 
+			}
+			else 
+				temp = All_Lists.get(ListIndex); 
+			List<Item> Curr_Item = temp.List_Items; 
+			int ItemIndex = getIndexItem(All_Items, ItemID); 
+			Item temp_item; 
+			if (ItemIndex == -1)
+			{
+				temp_item = p.new Item(ItemID); 
+				All_Items.add(temp_item); 
+			}
+			else
+				temp_item = All_Items.get(ItemIndex); 
+			Curr_Item.add(temp_item); 
+			temp_item.Item_Lists.add(temp); 			
+		}
+		return comb; 
+	}
+	public All buildUserItem(String file, All comb)
+	{
+		List<Tuple> input = read(file); 
+		List<User> All_Users = comb.All_Users; 
+		List<Item> All_Items = comb.All_Items; 
+		for (int i=0; i<input.size(); i++)
+		{
+			String UserID = input.get(i).x; 
+			String ItemID = input.get(i).y; 
+			int UserIndex = getIndexUser(All_Users, UserID); 
+			User temp; 
+			Objects p = new Objects(); 
+			if (UserIndex == -1)
+			{
+				temp = p.new User(UserID); 
+				All_Users.add(temp); 
+			}
+			else 
+				temp = All_Users.get(UserIndex); 
+			List<Item> Curr_Item = temp.User_Items; 
+			int ItemIndex = getIndexItem(All_Items, ItemID); 
+			Item temp_item; 
+			if (ItemIndex == -1)
+			{
+				temp_item = p.new Item(ItemID); 
+				All_Items.add(temp_item); 
+			}
+			else
+				temp_item = All_Items.get(ItemIndex); 
+			Curr_Item.add(temp_item); 
+			temp_item.Item_Users.add(temp); 			
+		}
+		return comb; 
+	}
 	
 	
 }
-
